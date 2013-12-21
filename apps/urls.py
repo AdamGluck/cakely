@@ -4,4 +4,4 @@ from apps import views
 
 urlpatterns = patterns('',
     url(r'^&', views.login, name='login'),
-    )
+)

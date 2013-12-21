@@ -22,6 +22,7 @@
       FB.Event.subscribe('auth.authResponseChange', function(response) {
           console.log("response")
           if (response.status === 'connected') {
+            window.location.replace("{% url 'historical' %}");
             testAPI();
           } else if (response.status === 'not_authorized') {
             FB.login();
