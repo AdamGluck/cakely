@@ -9,9 +9,10 @@
        <fb:login-button show-faces="false" height="39" width="200" max-rows="1" data-size="xlarge"></fb:login-button> 
       </div>
     </div>
-    
+
     <script>
       FB.Event.subscribe('auth.authResponseChange', function(response) {
+          console.log("response")
           if (response.status === 'connected') {
             testAPI();
           } else if (response.status === 'not_authorized') {
@@ -20,8 +21,7 @@
             FB.login();
           }
         });
-      };
-
+      
      function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
