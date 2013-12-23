@@ -17,4 +17,5 @@ class UserLink(models.Model):
     user = models.ForeignKey(User)
     link = models.ForeignKey(Link)
     upvoted = models.BooleanField(default=False)
+    seen = models.DateTimeField(null=True, blank=True)
 
