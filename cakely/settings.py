@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'south',
     'apps',
     'cakely',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (

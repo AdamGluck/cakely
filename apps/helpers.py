@@ -24,25 +24,40 @@ def get_liked_links(oauth):
     friend_count = len(graph.get_connections("me", "friends")['data'])
     links = []
     i = 0
+    batch_number = 0
+    batch_string = []
     print datetime.datetime.now()
 
     while (i <= friend_count):
         try: 
-            query = ''' SELECT link_id FROM link
-                    WHERE owner IN (SELECT uid1 FROM friend WHERE uid2 = me() LIMIT 10 OFFSET ''' + str(i) + ''')
-                    AND like_info.user_likes=1'''
-            new_links = graph.fql(query)
-            print new_links
-            links += new_links
+            batch_string.append({"relative_url": "method/fql.query?query=" + "SELECT url, image_urls, title, summary, caption FROM link WHERE owner IN (SELECT uid1 FROM friend WHERE uid2 = me() LIMIT 10 OFFSET " + str(i) + ") AND like_info.user_likes=1"})
+            batch_number += 1
+
+            if batch_number == 49:
+                new_links = graph.request("", post_args={"batch":json.dumps(batch_string)})
+                links += new_links
+                batch_number = 0
+                batch_string = []
+                print new_links
+
             i += 10
-            print i
+            #print i
         except Exception:
             i+= 10
             continue
 
-    print datetime.datetime.now()
-    print len(links)
-    return links
+    new_links = graph.request("", post_args={"batch":json.dumps(batch_string)})
+    links += new_links
+    liked_links = []
 
-oauth = "CAACEdEose0cBANevZB1NGY2NdSXXbHwSR7dnpT4ZBCPQPZChOksTxZBZCMddYF5nQf9rm4mSoZCAU0ZCzcDXNeEqhmTZAq7yCXZCUZC8eZBtbUHvdjwxqSI0clUtRFVFuuryQcA3AYjNeUqUlQ9ZAkSLNQvO3ypj1XIijkMqoOWRBiDzwg6pHZCkVmwnqX74zyDpVXRMZD"
+    for link in links:
+        if link:
+            body = json.loads(link[u'body'])
+            if len(body) and "error_code" not in body:
+                for item in body:
+                    liked_links.append(item)
+
+    return liked_links
+
+oauth = "CAACEdEose0cBAKKRqtbJBAtjiPLKmdJZBMc7hxoSRUTHqwXWzZA8FHALMbZBgmzk955mYXdJklDPJZB1Nilp8qrZCeEDMpHHuYVoEvzbwxCsYt6uI9JUOX26DaVZC4KwiKOniG50ZARMKwrkUt5IC24TWUIlO6K4FzSkySFKEiJYrQxTqa6PoacUTTLJJtZBlmUZD"
 # get_liked_links(oauth)
