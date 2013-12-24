@@ -94,7 +94,7 @@ USE_TZ = True
 #redis queue
 import redis
 
-Q_QUEUES = {
+RQ_QUEUES = {
     'default': {
         'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'), # If you're on Heroku
         'DB': 0,
