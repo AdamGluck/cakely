@@ -62,16 +62,19 @@ def run_queue(fb_id, oauth, email, user):
             image_url = link[u'image_urls'][0]
 
         try:
-            l = Link(url=link[u'url'], title=link[u'title'], summary=link[u'summary'], image_url=image_url)
+            l = Link(url=link[u'url'], title=link[u'title'], 
+                     summary=link[u'summary'], image_url=image_url)
             l.save()
         except Exception:
             l = Link.objects.filter(url=link[u'url'])
 
         try:
-            ul = UserLink(user=user, link=l)
+            ul = UserLink(user=user, link=l, seen=link[u'created_time'])
             ul.save() 
         except Exception:
             continue
+
+    user.loaded = True;
 
     return True   
 

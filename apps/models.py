@@ -4,6 +4,7 @@ from django.core.validators import URLValidator
 class User(models.Model):
     fb_id = models.BigIntegerField(null = True, blank = True, unique=True)
     email = models.EmailField()
+    loaded = models.BooleanField(default=False)
 
 class Link(models.Model):
     #used instead of URLField to take longer URLS

@@ -25,8 +25,9 @@ def get_liked_links(oauth):
     links = []
     i = 0
     batch_number = 1
+    # 1356998400 == Jan. 1st, 2013 at midnight
     batch_string = [{"relative_url": "method/fql.query?query=" + 
-                     "SELECT url, image_urls, title, \
+                     "SELECT url, image_urls, title, created_time, \
                       summary, caption FROM link WHERE owner=me() \
                       created_time > 1356998400"}]
     print datetime.datetime.now()
@@ -34,7 +35,7 @@ def get_liked_links(oauth):
     while (i <= friend_count):
         try: 
             batch_string.append({"relative_url": "method/fql.query?query=" + 
-                                  "SELECT url, image_urls, \
+                                  "SELECT url, image_urls, created_time, \
                                   title, summary, caption \
                                   FROM link WHERE owner IN \
                                   (SELECT uid1 FROM friend WHERE uid2 = me() \
