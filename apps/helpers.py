@@ -38,8 +38,6 @@ def get_liked_links(oauth):
                 links += new_links
                 batch_number = 0
                 batch_string = []
-                print new_links
-
             i += 10
             print i
         except Exception:
@@ -56,7 +54,7 @@ def get_liked_links(oauth):
             if len(body) and "error_code" not in body:
                 for item in body:
                     liked_links.append(item)
-
+    print "returning liked_links"
     return liked_links
 
 oauth = "CAACEdEose0cBAKKRqtbJBAtjiPLKmdJZBMc7hxoSRUTHqwXWzZA8FHALMbZBgmzk955mYXdJklDPJZB1Nilp8qrZCeEDMpHHuYVoEvzbwxCsYt6uI9JUOX26DaVZC4KwiKOniG50ZARMKwrkUt5IC24TWUIlO6K4FzSkySFKEiJYrQxTqa6PoacUTTLJJtZBlmUZD"

@@ -35,33 +35,40 @@ class RunView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            u = User(fb_id=fb_id, email=email)
-            u.save()
+            user = User(fb_id=fb_id, email=email)
+            user.save()
         except Exception:
             content = {'content': 'account already exists'}
             return Response(content, status=status.HTTP_200_OK)
 
-        django_rq.enqueue(run_queue, fb_id, oauth, email)
+        django_rq.enqueue(run_queue, fb_id, oauth, email, user)
         return Response(status=status.HTTP_201_CREATED)
 
-def run_queue(fb_id, oauth, email):
+def run_queue(fb_id, oauth, email, user):
+    print("in run queue")
     links = helpers.get_liked_links(oauth)
 
     for link in links:
+        print "link loop"
+        if not link:
+            continue
+
         image_url = ""
-        if len(link[u'image_urls']):
+        if link[u'image_urls']:
             image_url = link[u'image_urls'][0]
 
         try:
             l = Link(url=link[u'url'], title=link[u'title'], summary=link[u'summary'], image_url=image_url)
             l.save()
         except Exception:
+            print "except for link saving"
             l = Link.objects.filter(url=link[u'url'])
 
         try:
-            ul = UserLink(user=u, link=l)
+            ul = UserLink(user=user, link=l)
             ul.save() 
         except Exception:
+            print "ecept for UserLink saving"
             continue
 
     return True   
