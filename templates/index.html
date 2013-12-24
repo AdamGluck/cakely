@@ -36,7 +36,14 @@
                                     "fb_id": fb_id, 
                                     "email": email
                                   }),
-                                  success: alert("success!"),
+                                  statusCode: {
+                                    200: function(){
+                                       window.location.replace("{% url 'historical' %}");
+                                    },
+                                    201: function(){
+                                       window.location.replace("{% url 'historical' %}");
+                                    }
+                                  }
                                   dataType: "json",
                                   headers: {
                                     "Content-Type": "application/json",
@@ -50,7 +57,6 @@
               http.open("POST", url, true);
               http.onreadystatechange = function() {
                     if(http.readyState == 4 && http.status == 200 || http.status == 201) {
-                        window.location.replace("{% url 'historical' %}");
                     }
               }
               http.send(JSON.stringify(params)); */
