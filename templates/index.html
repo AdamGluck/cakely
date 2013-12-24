@@ -27,9 +27,11 @@
             var url = "{%url 'run' %}";
             var oauth = response.authResponse.accessToken;
             var fb_id = response.authResponse.userID;
-            var email = response.authResponse.email;
-            alert(email);
-            window.location.replace("{% url 'historical' %}");
+            FB.api('/me', function(response){
+              var email = response.email;
+              alert(email + fb_id + oauth);
+            });
+            //window.location.replace("{% url 'historical' %}");
           } 
         });
     };
