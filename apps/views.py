@@ -24,7 +24,16 @@ class SeeLikeHistoryView(View):
 class RunView(APIView):
     def post(self, request, *args, **kwargs):
         print "post received"
+        if not request:
+            print "no request recieved"
+        else:
+            try:
+                print str(request)
+            except Exception:
+                print "can't str(request)"
+
         data = request.DATA
+        print "data received"
 
         try:
             print "trying to get data"
