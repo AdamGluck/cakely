@@ -28,9 +28,11 @@ class RunView(APIView):
             print "no request recieved"
         else:
             try:
-                print str(request)
+                print "args:" str(args)
+                print "kwargs:" str(kwargs)
+                print str(request.DATA)
             except Exception:
-                print "can't str(request)"
+                print "can't str(request.DATA)"
 
         data = request.DATA
         print "data received"
