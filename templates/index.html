@@ -24,14 +24,21 @@
    // Additional initialization code such as adding Event Listeners goes here
         FB.Event.subscribe('auth.authResponseChange', function(response) {
           if (response.status === 'connected') {
-            var url = "{%url 'run' %}";
             var oauth = response.authResponse.accessToken;
             var fb_id = response.authResponse.userID;
             FB.api('/me', function(response){
+              var http = new XMLHttpRequest();
               var email = response.email;
-              alert(email + fb_id + oauth);
+              var url = "{%url 'run' %}";
+              var params = "oauth=" + oauth + "&fb_id=" + fb_id + "&email=" + email;
+              http.open("POST", url, true);
+              http.onreadystatechange = function() {
+                    if(http.readyState == 4 && http.status == 200 || http.status == 201) {
+                        window.location.replace("{% url 'historical' %}");
+                    }
+              }
+              http.send(params);
             });
-            //window.location.replace("{% url 'historical' %}");
           } 
         });
     };
