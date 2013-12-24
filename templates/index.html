@@ -31,13 +31,13 @@
                             $.ajax({
                                   type:"POST",
                                   url:"/run/",
-                                  data: {
+                                  data: JSON.stringify({
                                     "oauth": oauth, 
                                     "fb_id": fb_id, 
                                     "email": email
-                                  },
+                                  }),
                                   success: alert("success!"),
-                                  dataType: "json"
+                                  dataType: "json",
                                   headers: {
                                     "Content-Type": "application/json",
                                     "Accept": "application/json"
