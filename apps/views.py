@@ -23,9 +23,11 @@ class SeeLikeHistoryView(View):
 
 class RunView(APIView):
     def post(self, request, *args, **kwargs):
+        print "post received"
         data = request.DATA
 
         try:
+            print "trying to get data"
             fb_id = data['fb_id']
             oauth = data['oauth']
             email = data['email']
@@ -34,14 +36,16 @@ class RunView(APIView):
             return Response(error,
                             status=status.HTTP_400_BAD_REQUEST)
 
+        print "trying to get User"
         try:
             user = User(fb_id=fb_id, email=email)
             user.save()
         except Exception:
             content = {'content': 'account already exists'}
             return Response(content, status=status.HTTP_200_OK)
-
+        print("starting redis queue")
         django_rq.enqueue(run_queue, fb_id, oauth, email, user)
+        print("redis queue started")
         return Response(status=status.HTTP_201_CREATED)
 
 def run_queue(fb_id, oauth, email, user):
