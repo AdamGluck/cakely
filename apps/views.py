@@ -49,7 +49,6 @@ def run_queue(fb_id, oauth, email, user):
     links = helpers.get_liked_links(oauth)
 
     for link in links:
-        print "link loop"
         if not link:
             continue
 
@@ -61,14 +60,12 @@ def run_queue(fb_id, oauth, email, user):
             l = Link(url=link[u'url'], title=link[u'title'], summary=link[u'summary'], image_url=image_url)
             l.save()
         except Exception:
-            print "except for link saving"
             l = Link.objects.filter(url=link[u'url'])
 
         try:
             ul = UserLink(user=user, link=l)
             ul.save() 
         except Exception:
-            print "ecept for UserLink saving"
             continue
 
     return True   

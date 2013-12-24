@@ -24,13 +24,24 @@ def get_liked_links(oauth):
     friend_count = len(graph.get_connections("me", "friends")['data'])
     links = []
     i = 0
-    batch_number = 0
-    batch_string = []
+    batch_number = 1
+    batch_string = [{"relative_url": "method/fql.query?query=" + 
+                     "SELECT url, image_urls, title, \
+                      summary, caption FROM link WHERE owner=me() \
+                      created_time > 1356998400"}]
     print datetime.datetime.now()
 
     while (i <= friend_count):
         try: 
-            batch_string.append({"relative_url": "method/fql.query?query=" + "SELECT url, image_urls, title, summary, caption FROM link WHERE owner IN (SELECT uid1 FROM friend WHERE uid2 = me() LIMIT 10 OFFSET " + str(i) + ") AND like_info.user_likes=1"})
+            batch_string.append({"relative_url": "method/fql.query?query=" + 
+                                  "SELECT url, image_urls, \
+                                  title, summary, caption \
+                                  FROM link WHERE owner IN \
+                                  (SELECT uid1 FROM friend WHERE uid2 = me() \
+                                  LIMIT 10 OFFSET " + str(i) + ") AND \
+                                  (like_info.user_likes=1 OR \
+                                  like_info.like_count > 15) \
+                                  AND created_time > 1356998400"})
             batch_number += 1
 
             if batch_number == 49:
@@ -54,7 +65,6 @@ def get_liked_links(oauth):
             if len(body) and "error_code" not in body:
                 for item in body:
                     liked_links.append(item)
-    print "returning liked_links"
     return liked_links
 
 oauth = "CAACEdEose0cBAKKRqtbJBAtjiPLKmdJZBMc7hxoSRUTHqwXWzZA8FHALMbZBgmzk955mYXdJklDPJZB1Nilp8qrZCeEDMpHHuYVoEvzbwxCsYt6uI9JUOX26DaVZC4KwiKOniG50ZARMKwrkUt5IC24TWUIlO6K4FzSkySFKEiJYrQxTqa6PoacUTTLJJtZBlmUZD"
