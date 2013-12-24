@@ -94,8 +94,12 @@ USE_TZ = True
 #redis queue
 import redis
 
-redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
-redis = redis.from_url(redis_url)
+Q_QUEUES = {
+    'default': {
+        'URL': os.getenv('REDISTOGO_URL', 'redis://localhost:6379'), # If you're on Heroku
+        'DB': 0,
+    },
+}
 
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
