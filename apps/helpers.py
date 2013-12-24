@@ -41,7 +41,7 @@ def get_liked_links(oauth):
                 print new_links
 
             i += 10
-            #print i
+            print i
         except Exception:
             i+= 10
             continue

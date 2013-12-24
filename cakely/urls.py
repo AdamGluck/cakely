@@ -11,4 +11,7 @@ urlpatterns = patterns('',
     url(r'^historical/', SeeLikeHistoryView.as_view(), name='historical'),
     url(r'^run/', RunView.as_view(), name='run'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^django-rq/', include('django_rq.urls')),
 )
+
+
