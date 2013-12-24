@@ -5,8 +5,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-import apps.helpers as helpers
 from apps.models import Link, User, UserLink
+
+import time
+import calendar
+import datetime
+import django.utils.timezone as tz
+
+import apps.helpers as helpers
 import django_rq
 
 class HomePageView(View):
@@ -69,13 +75,16 @@ def run_queue(fb_id, oauth, email, user):
             l = Link.objects.filter(url=link[u'url'])
 
         try:
-            ul = UserLink(user=user, link=l, seen=link[u'created_time'])
+            proper_date = datetime.datetime.utcfromtimestamp(link[u'created_time'])
+            utc_date = tz.make_aware(proper_date, tz.utc)
+            date_string = utc_date.isoformat()
+            ul = UserLink(user=user, link=l, seen=date_string)
             ul.save() 
         except Exception:
             continue
 
     user.loaded = True;
-
+    user.save()
     return True   
 
 
