@@ -28,8 +28,8 @@
             var fb_id = response.authResponse.userID;
             FB.api('/me', function(response){
               var http = new XMLHttpRequest();
-              http.setRequestHeader("Accept", "application/json");
-              http.setRequestHeader("Content-Type", "application/json");
+              //http.setRequestHeader("Accept", "application/json");
+              //http.setRequestHeader("Content-Type", "application/json");
               var email = response.email;
               var url = "{%url 'run' %}";
               var params = {"oauth": oauth, "fb_id": fb_id, "email": email};
