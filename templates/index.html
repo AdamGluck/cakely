@@ -31,11 +31,17 @@
                             $.ajax({
                                   type:"POST",
                                   url:"/run/",
-                                  data: {"oauth": oauth, 
-                                         "fb_id": fb_id, 
-                                         "email": email},
+                                  data: {
+                                    "oauth": oauth, 
+                                    "fb_id": fb_id, 
+                                    "email": email
+                                  },
                                   success: alert("success!"),
                                   dataType: "json"
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                    "Accept": "application/json"
+                                  }
                             });
               //var http = new XMLHttpRequest();
               //http.setRequestHeader("Accept", "application/json");
