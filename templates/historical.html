@@ -26,7 +26,7 @@ window.fbAsyncInit = function() {
                 // roughly 500 friends == 30 seconds
                 var timeInMinutes = Math.ceil(numFriends / 750.0);
                 console.log("about to set attribute");
-                $("#loading-time").remove();
+                $("#loading-time").text("It will take roughly " + timeInMinutes.toString());
                 alert(timeInMinutes.toString());
             });
         });
