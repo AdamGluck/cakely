@@ -50,10 +50,12 @@ def get_liked_links(oauth):
                 links += new_links
                 batch_number = 0
                 batch_string = []
+            
             i += 10
             print i
         except Exception:
             i+= 10
+            print "exception == " + str(i)
             continue
 
     new_links = graph.request("", post_args={"batch":json.dumps(batch_string)})
