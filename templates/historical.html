@@ -26,7 +26,7 @@ window.fbAsyncInit = function() {
                 // roughly 500 friends == 30 seconds
                 var timeInMinutes = Math.ceil(numFriends / 750.0);
                 console.log("about to set attribute");
-                $("#loading-time").attr("color", "red");
+                $("#loading-time").remove();
                 alert(timeInMinutes.toString());
             });
         });
@@ -43,6 +43,7 @@ window.fbAsyncInit = function() {
 $( document ).ready(function() {
     console.log( "ready!" );
 });
+
 </script>
 </body>
 
