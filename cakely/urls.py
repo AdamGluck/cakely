@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
-
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 from apps.views import HomePageView, SeeLikeHistoryView, RunView
 admin.autodiscover()
@@ -12,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^run/', RunView.as_view(), name='run'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^django-rq/', include('django_rq.urls')),
+    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
 )
 
 
