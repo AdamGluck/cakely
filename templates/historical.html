@@ -33,7 +33,7 @@ window.fbAsyncInit = function() {
                     $("#loading-time").text("Roughly " + timeInMinutes.toString() + " minute");
                 }
                 NProgress.start();
-                NProgress.inc();
+                NProgress.done(true);
             });
         });
 };
