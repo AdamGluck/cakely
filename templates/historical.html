@@ -8,12 +8,16 @@
     <script src="{% static "js/nprogress.js" %}"></script>
 </head>
 <body>
+<script>
+NProgress.start();
+</script>
 <div class="container" id="loading-container" style="text-align: center; bottom-margin: 50px; top-margin: 50px">
     <h2>We will load all your articles in... </h2>
     <h2 id="loading-time">Estimating loading time</h2>
 </div>
 <div id="fb-root"></div>    
 <script>
+
 window.fbAsyncInit = function() {
     // init the FB JS SDK
         FB.init({
@@ -32,10 +36,10 @@ window.fbAsyncInit = function() {
                 } else {
                     $("#loading-time").text("Roughly " + timeInMinutes.toString() + " minute");
                 }
-                NProgress.start();
-                NProgress.done(true);
+
             });
         });
+        NProgress.done();
 };
 
 (function(d){
