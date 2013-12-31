@@ -9,15 +9,38 @@
     <script src="{% static "js/nprogress.js" %}"></script>
 </head>
 <body>
-<script>
-NProgress.start();
-</script>
 <div class="container" id="loading-container" style="text-align: center; bottom-margin: 50px; top-margin: 50px">
-    <h2>We will load all your articles in... </h2>
+    <h2>Your 2013 articles will load in...</h2>
     <h2 id="loading-time">Estimating loading time</h2>
 </div>
 <div id="fb-root"></div>    
 <script>
+
+var test_loaded = function(fb_id) {
+    $.ajax({
+            type:"GET",
+            url:"/run/",
+            data: {"fb_id": fb_id},
+            statusCode: {
+              200: function(response){
+                    var isLoaded = (response["loaded"] == "true"); // note whatever toBool 
+
+                    if (isLoaded){
+                        NProgress.done();
+                        // redirect
+                        alert("done!");
+                    } else {
+                        test_loaded(fb_id);
+                    }
+              }
+            },
+            dataType: "json",
+            headers: {
+             "Content-Type": "application/json",
+             "Accept": "application/json"
+            }
+    });
+};
 
 window.fbAsyncInit = function() {
     // init the FB JS SDK
@@ -27,21 +50,23 @@ window.fbAsyncInit = function() {
           xfbml      : true                                  // Look for social plugins on the page
         });
 
-        FB.getLoginStatus(function(response){
-            FB.api('/me/friends', function(response){
-                var numFriends = response.data.length;
+        FB.getLoginStatus(function(loginResponse){
+            FB.api('/me/friends', function(apiResponse){
+                var numFriends = apiResponse.data.length;
                 // roughly 500 friends == 30 seconds
                 var timeInMinutes = Math.ceil(numFriends / 750.0);
                 if (timeInMinutes > 1){
-                    $("#loading-time").text("Roughly " + timeInMinutes.toString() + " minutes");
+                    $("#loading-time").text("~" + timeInMinutes.toString() + " minutes");
                 } else {
-                    $("#loading-time").text("Roughly " + timeInMinutes.toString() + " minute");
+                    $("#loading-time").text("~" + timeInMinutes.toString() + " minute");
                 }
-
+                NProgress.start();
+                test_loaded(loginResponse.authResponse.userID);
             });
         });
-        NProgress.done();
 };
+
+
 
 (function(d){
         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];

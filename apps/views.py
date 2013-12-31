@@ -28,6 +28,23 @@ class SeeLikeHistoryView(View):
         return render(request, self.template_name)
 
 class RunView(APIView):
+    def get(self, request, *args, **kwargs):
+        data = request.QUERY_PARAMS
+        fb_id = data['fb_id']
+        print(fb_id);
+        try:
+            user = User.objects.filter(fb_id=fb_id)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if user.loaded:
+            completion_status = {"loaded": "true"}
+            return Response(completion_status, status=status.HTTP_200_OK)
+        else:
+            completion_status = {"loaded": "false"}
+            return Response(completion_status, status=status.HTTP_200_OK)
+
+
     def post(self, request, *args, **kwargs):
         print "post received"
         data = request.DATA
