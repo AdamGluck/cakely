@@ -16,7 +16,9 @@
 <div id="fb-root"></div>    
 <script>
 
-var test_loaded = function(fb_id) {
+function test_loaded(fb_id) 
+{
+    console.log("polling");
     $.ajax({
             type:"GET",
             url:"/run/",
@@ -24,12 +26,11 @@ var test_loaded = function(fb_id) {
             statusCode: {
               200: function(response){
                     var isLoaded = (response["loaded"] == "true"); // note whatever toBool 
-
                     if (isLoaded){
                         NProgress.done();
                         // redirect
-                        alert("done!");
-                    } else {
+                        console.log("done");
+                    } else {    
                         test_loaded(fb_id);
                     }
               }
@@ -40,7 +41,7 @@ var test_loaded = function(fb_id) {
              "Accept": "application/json"
             }
     });
-};
+}
 
 window.fbAsyncInit = function() {
     // init the FB JS SDK
