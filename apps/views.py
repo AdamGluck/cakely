@@ -33,7 +33,12 @@ class RunView(APIView):
         fb_id = data['fb_id']
         print(fb_id);
         try:
-            user = User.objects.filter(fb_id=fb_id)
+            user_queryset = User.objects.filter(fb_id=fb_id)
+            user_list = list(user_queryset)
+            if len(user_list) == 1:
+                user = user_list[0]
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
